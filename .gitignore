@@ -1,5 +1,16 @@
+# IDE
+.idea
+jitsi-videobridge-rest-dealer.iml
+
+# Bash scripts
+_start.sh
+
 # Compiled class file
 *.class
+target
+
+# Blob files
+lib
 
 # Log file
 *.log
