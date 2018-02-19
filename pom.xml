@@ -17,225 +17,24 @@
   <name>jitsi-videobridge-rest-dealer</name>
   <url>https://github.com/sidorovis/jitsi-videobridge-rest-dealer</url>
 
-  <properties>
-    <assembly.skipAssembly>true</assembly.skipAssembly>
-    <exec.mainClass>org.jitsi.videobridge.Main</exec.mainClass>
-    <jitsi-desktop.version>2.13.fdf384f</jitsi-desktop.version>
-    <smack.version>4.2.1</smack.version>
-  </properties>
-
-  <dependencyManagement>
-    <dependencies>
-    </dependencies>
-  </dependencyManagement>
-
   <dependencies>
-    <!-- org.jitsi -->
     <dependency>
       <groupId>org.jitsi</groupId>
       <artifactId>jicoco</artifactId>
-      <version>1.1-20171010.184527-1</version>
+      <version>1.1-SNAPSHOT</version>
+      <scope>provided</scope>
     </dependency>
       <dependency>
           <groupId>org.jitsi</groupId>
           <artifactId>jitsi-videobridge</artifactId>
           <version>1.1-SNAPSHOT</version>
-      </dependency>
-      <dependency>
-          <groupId>com.googlecode.json-simple</groupId>
-          <artifactId>json-simple</artifactId>
-      </dependency>
-      <dependency>
-          <groupId>dom4j</groupId>
-          <artifactId>dom4j</artifactId>
-      </dependency>
-      <dependency>
-          <groupId>org.eclipse.jetty</groupId>
-          <artifactId>jetty-rewrite</artifactId>
-      </dependency>
-      <dependency>
-          <groupId>org.eclipse.jetty.websocket</groupId>
-          <artifactId>websocket-server</artifactId>
-          <version>${jetty.version}</version>
-      </dependency>
-      <dependency>
-          <groupId>org.fusesource</groupId>
-          <artifactId>sigar</artifactId>
-      </dependency>
-      <dependency>
-          <groupId>org.igniterealtime</groupId>
-          <artifactId>tinder</artifactId>
-          <version>1.3.0</version>
-      </dependency>
-      <dependency>
-          <groupId>org.igniterealtime.smack</groupId>
-          <artifactId>smack-extensions</artifactId>
-          <version>${smack.version}</version>
-      </dependency>
-      <dependency>
-          <groupId>org.igniterealtime.whack</groupId>
-          <artifactId>core</artifactId>
-          <version>2.0.1</version>
-      </dependency>
-      <!--
-       https://mvnrepository.com/artifact/org.jetbrains/annotations
-      -->
-      <dependency>
-          <groupId>org.jetbrains</groupId>
-          <artifactId>annotations</artifactId>
-          <version>15.0</version>
-      </dependency>
-      <!--  org.jitsi  -->
-      <dependency>
-          <groupId>${project.groupId}</groupId>
-          <artifactId>fmj</artifactId>
-          <version>1.0-20161207.221530-23</version>
-      </dependency>
-      <dependency>
-          <groupId>${project.groupId}</groupId>
-          <artifactId>ice4j</artifactId>
-          <version>2.0.0-20171114.204540-5</version>
-      </dependency>
-      <dependency>
-          <groupId>${project.groupId}</groupId>
-          <artifactId>jicoco</artifactId>
-          <version>1.1-20171010.184527-1</version>
-      </dependency>
-      <dependency>
-          <groupId>${project.groupId}</groupId>
-          <artifactId>jitsi-android-osgi</artifactId>
-          <version>1.0-20150723.002702-1</version>
-      </dependency>
-      <dependency>
-          <groupId>${project.groupId}</groupId>
-          <artifactId>jitsi-configuration</artifactId>
-          <version>${jitsi-desktop.version}</version>
-      </dependency>
-      <dependency>
-          <groupId>${project.groupId}</groupId>
-          <artifactId>jitsi-fileaccess</artifactId>
-          <version>${jitsi-desktop.version}</version>
-      </dependency>
-      <dependency>
-          <groupId>${project.groupId}</groupId>
-          <artifactId>jitsi-netaddr</artifactId>
-          <version>${jitsi-desktop.version}</version>
-      </dependency>
-      <dependency>
-          <groupId>${project.groupId}</groupId>
-          <artifactId>jitsi-packetlogging</artifactId>
-          <version>${jitsi-desktop.version}</version>
-      </dependency>
-      <dependency>
-          <groupId>${project.groupId}</groupId>
-          <artifactId>jitsi-protocol</artifactId>
-          <version>${jitsi-desktop.version}</version>
-      </dependency>
-      <dependency>
-          <groupId>${project.groupId}</groupId>
-          <artifactId>jitsi-protocol-jabber</artifactId>
-          <version>${jitsi-desktop.version}</version>
-      </dependency>
-      <dependency>
-          <groupId>${project.groupId}</groupId>
-          <artifactId>jitsi-protocol-media</artifactId>
-          <version>${jitsi-desktop.version}</version>
-      </dependency>
-      <dependency>
-          <groupId>${project.groupId}</groupId>
-          <artifactId>jitsi-resourcemanager</artifactId>
-          <version>${jitsi-desktop.version}</version>
-      </dependency>
-      <!--
-       Note that this is not part of jitsi/jitsi, and it has a separate version.
-      -->
-      <dependency>
-          <groupId>${project.groupId}</groupId>
-          <artifactId>jitsi-stats</artifactId>
-          <version>1.0-20171010.224039-4</version>
-      </dependency>
-      <dependency>
-          <groupId>${project.groupId}</groupId>
-          <artifactId>jitsi-ui-service</artifactId>
-          <version>${jitsi-desktop.version}</version>
-      </dependency>
-      <dependency>
-          <groupId>${project.groupId}</groupId>
-          <artifactId>jitsi-util</artifactId>
-          <version>${jitsi-desktop.version}</version>
-      </dependency>
-      <dependency>
-          <groupId>${project.groupId}</groupId>
-          <artifactId>libjitsi</artifactId>
-          <version>1.0-20180129.192654-336</version>
-      </dependency>
-      <dependency>
-          <groupId>${project.groupId}</groupId>
-          <artifactId>newrelic-api-stub</artifactId>
           <scope>provided</scope>
       </dependency>
       <dependency>
           <groupId>org.osgi</groupId>
           <artifactId>org.osgi.core</artifactId>
+          <scope>provided</scope>
       </dependency>
-      <dependency>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-jdk14</artifactId>
-      </dependency>
-      <dependency>
-          <groupId>org.slf4j</groupId>
-          <artifactId>osgi-over-slf4j</artifactId>
-          <version>${slf4j.version}</version>
-      </dependency>
-      <dependency>
-          <groupId>org.slf4j</groupId>
-          <artifactId>jul-to-slf4j</artifactId>
-          <version>${slf4j.version}</version>
-      </dependency>
-      <dependency>
-          <groupId>xpp3</groupId>
-          <artifactId>xpp3</artifactId>
-      </dependency>
-      <!--  runtime  -->
-      <dependency>
-          <groupId>rusv</groupId>
-          <artifactId>agafua-syslog</artifactId>
-          <scope>runtime</scope>
-      </dependency>
-    <!-- test -->
-    <dependency>
-      <groupId>org.easymock</groupId>
-      <artifactId>easymock</artifactId>
-      <version>3.4</version>
-      <scope>test</scope>
-    </dependency>
-	<!-- https://mvnrepository.com/artifact/org.powermock/powermock-core -->
-	<dependency>
-		<groupId>org.powermock</groupId>
-		<artifactId>powermock-core</artifactId>
-		<version>1.7.3</version>
-		<scope>test</scope>
-	</dependency>
-	<!-- https://mvnrepository.com/artifact/org.powermock/powermock-api-easymock -->
-	<dependency>
-		<groupId>org.powermock</groupId>
-		<artifactId>powermock-api-easymock</artifactId>
-		<version>1.7.3</version>
-		<scope>test</scope>
-	</dependency>
-	<!-- https://mvnrepository.com/artifact/org.powermock/powermock-module-junit4 -->
-	<dependency>
-		<groupId>org.powermock</groupId>
-		<artifactId>powermock-module-junit4</artifactId>
-		<version>1.7.3</version>
-		<scope>test</scope>
-	</dependency>
-
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <build>
@@ -249,32 +48,20 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>3.1.0</version>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+        </configuration>
         <executions>
           <execution>
-            <id>exec-exec</id>
+            <id>jar</id>
+            <phase>package</phase>
             <goals>
-              <goal>exec</goal>
+              <goal>single</goal>
             </goals>
-            <configuration>
-              <executable>java</executable>
-              <arguments>
-                <argument>-classpath</argument>
-                <classpath />
-                <argument>-Djava.util.logging.config.file=${project.basedir}/lib/logging.properties</argument>
-                <argument>${exec.mainClass}</argument>
-              </arguments>
-            </configuration>
-          </execution>
-          <execution>
-            <id>exec-java</id>
-            <goals>
-              <goal>java</goal>
-            </goals>
-            <configuration>
-              <mainClass>${exec.mainClass}</mainClass>
-            </configuration>
           </execution>
         </executions>
       </plugin>
