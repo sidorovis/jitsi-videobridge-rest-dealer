@@ -158,7 +158,15 @@ public class ChannelStatsDealer
             final Channel channel = (Channel)eventSource;
             final String conferenceID = channel.getContent().getConference().getID();
             final String channelID = channel.getID();
-            sendRequest(type, conferenceID, channelID);
+            final String channelBundleId = channel.getChannelBundleId();
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("ConferenceID", conferenceID);
+            jsonObject.put("ChannelID", channelID);
+            jsonObject.put("ChannelBundleId", channelBundleId);
+            final String message = jsonObject.toJSONString();
+
+            sendRequest(type, message);
         } else {
             logger.error("bad event source type for " + type + ": " +
                     eventSource.getClass().getSimpleName());
@@ -179,7 +187,7 @@ public class ChannelStatsDealer
             }
     };
 
-    private void sendRequest(String type, String conferenceID, String channelID) {
+    private void sendRequest(String type, String content) {
         HttpURLConnection connection = null;
         try {
             URL url = new URL(endpointOrigin + type);
@@ -200,22 +208,17 @@ public class ChannelStatsDealer
                 });
             }
 
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("ConferenceID", conferenceID);
-            jsonObject.put("ChannelID", channelID);
-            final String message = jsonObject.toJSONString();
-
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type",
                     "application/text");
             connection.setRequestProperty("Content-Length",
-                    Integer.toString(message.getBytes().length));
+                    Integer.toString(content.getBytes().length));
             connection.setRequestProperty("Content-Language", "en-US");
             connection.setUseCaches(false);
             connection.setDoOutput(true);
             DataOutputStream wr = new DataOutputStream (
                     connection.getOutputStream());
-            wr.writeBytes(message);
+            wr.writeBytes(content);
             wr.close();
             InputStream is = connection.getInputStream();
             BufferedReader rd = new BufferedReader(new InputStreamReader(is));
