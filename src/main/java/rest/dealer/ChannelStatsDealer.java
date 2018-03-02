@@ -2,13 +2,14 @@ package rest.dealer;
 
 import net.java.sip.communicator.util.Logger;
 import net.java.sip.communicator.util.ServiceUtils;
+import org.ice4j.ice.IceProcessingState;
 import org.jitsi.eventadmin.Event;
 import org.jitsi.osgi.EventHandlerActivator;
 import org.jitsi.service.configuration.ConfigurationService;
-import org.jitsi.videobridge.Channel;
-import org.jitsi.videobridge.EventFactory;
+import org.jitsi.videobridge.*;
 import org.json.simple.JSONObject;
 import org.osgi.framework.BundleContext;
+
 
 import javax.net.ssl.*;
 import java.io.BufferedReader;
@@ -80,7 +81,7 @@ public class ChannelStatsDealer
      * The default value for {@link #endpointOrigin}.
      */
     private final static String DEFAULT_ENDPOINT_ORIGIN =
-            "http://127.0.0.1:9100/channelUpdates/";
+            "http://127.0.0.1:9100/post_jvb_events/";
 
     /**
      * Default value for {@link #acceptSelfSigned}
@@ -95,7 +96,9 @@ public class ChannelStatsDealer
 
     public ChannelStatsDealer()
     {
-        super(new String[] { EventFactory.CHANNEL_CREATED_TOPIC, EventFactory.CHANNEL_EXPIRED_TOPIC });
+        super(new String[] {
+                EventFactory.CHANNEL_EXPIRED_TOPIC,
+                EventFactory.MSG_TRANSPORT_READY_TOPIC});
     }
 
     @Override
@@ -145,17 +148,25 @@ public class ChannelStatsDealer
 
         String topic = event.getTopic();
 
-        if (topic.equals(EventFactory.CHANNEL_CREATED_TOPIC)) {
-            postEvent("channelCreated", event);
-        } else if (topic.equals(EventFactory.CHANNEL_EXPIRED_TOPIC)) {
+        if (topic.equals(EventFactory.CHANNEL_EXPIRED_TOPIC)) {
             postEvent("channelExpired", event);
+        } else if (topic.equals(EventFactory.MSG_TRANSPORT_READY_TOPIC)) {
+            postEvent("transportReady", event);
         }
     }
 
     private void postEvent(String type, Event event) {
         final Object eventSource = event.getProperty(EventFactory.EVENT_SOURCE);
-        if (eventSource instanceof Channel) {
-            final Channel channel = (Channel)eventSource;
+        if (eventSource instanceof Endpoint) {
+            final Endpoint endpoint = (Endpoint) eventSource;
+            final String endpointDisplayName = endpoint.getID();
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("EndpointDisplayName", endpointDisplayName);
+            jsonObject.put("ConferenceID", endpoint.getConference().getID());
+            final String message = jsonObject.toJSONString();
+            sendRequest(type, message);
+        } else if (eventSource instanceof Channel) {
+            final Channel channel = (Channel) eventSource;
             final String conferenceID = channel.getContent().getConference().getID();
             final String channelID = channel.getID();
             final String channelBundleId = channel.getChannelBundleId();
@@ -167,7 +178,32 @@ public class ChannelStatsDealer
             final String message = jsonObject.toJSONString();
 
             sendRequest(type, message);
-        } else {
+        }
+        else if (eventSource instanceof IceUdpTransportManager)
+        {
+            final IceUdpTransportManager manager = (IceUdpTransportManager) eventSource;
+            final String conferenceID = manager.getConference().getID();
+            final String iceStreamName = manager.getIceStream().getName();
+            final String icePassword = manager.getIcePassword();
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("ConferenceID", conferenceID);
+            jsonObject.put("IceStreamName", iceStreamName);
+            jsonObject.put("IcePassword", icePassword);
+
+            if (event.getProperty("oldState") != null) {
+                jsonObject.put("oldState", event.getProperty("oldState").toString());
+            }
+            if (event.getProperty("newState") != null) {
+                jsonObject.put("newState", event.getProperty("newState").toString());
+            }
+
+            final String message = jsonObject.toJSONString();
+
+            sendRequest(type, message);
+        }
+        else
+        {
             logger.error("bad event source type for " + type + ": " +
                     eventSource.getClass().getSimpleName());
         }
@@ -201,11 +237,11 @@ public class ChannelStatsDealer
                         sc.getSocketFactory());
                 HttpsURLConnection.setDefaultHostnameVerifier(
                         new HostnameVerifier() {
-                    @Override
-                    public boolean verify(String arg0, SSLSession arg1) {
-                        return true;
-                    }
-                });
+                            @Override
+                            public boolean verify(String arg0, SSLSession arg1) {
+                                return true;
+                            }
+                        });
             }
 
             connection.setRequestMethod("POST");
