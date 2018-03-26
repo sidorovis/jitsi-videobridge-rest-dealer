@@ -18,7 +18,7 @@
   <url>https://github.com/sidorovis/jitsi-videobridge-rest-dealer</url>
 
   <properties>
-    <assembly.skipAssembly>true</assembly.skipAssembly>
+    <assembly.skipAssembly>false</assembly.skipAssembly>
     <exec.mainClass>org.jitsi.videobridge.Main</exec.mainClass>
     <jitsi-desktop.version>2.13.fdf384f</jitsi-desktop.version>
     <smack.version>4.2.1</smack.version>
@@ -39,7 +39,7 @@
       <dependency>
           <groupId>org.jitsi</groupId>
           <artifactId>jitsi-videobridge</artifactId>
-          <version>1.1-SNAPSHOT</version>
+          <version>1.1-20180201.165917-32</version>
       </dependency>
       <dependency>
           <groupId>com.googlecode.json-simple</groupId>
@@ -275,6 +275,29 @@
             <configuration>
               <mainClass>${exec.mainClass}</mainClass>
             </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>3.1.0</version>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <archive>
+            <manifest>
+    		<mainClass>${exec.mainClass}</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+        <executions>
+          <execution>
+            <id>jitsi-videogridge-rest-dealer</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>
